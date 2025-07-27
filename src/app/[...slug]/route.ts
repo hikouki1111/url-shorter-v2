@@ -1,8 +1,11 @@
 import {NextRequest, NextResponse} from 'next/server'
 import {prisma} from "@/lib/prisma";
+import {use} from "react";
 
-export async function GET(req: NextRequest, { params }: { params: { slug: string[] } }) {
-    const slug = params.slug || []
+type tParams = Promise<{ slug: string[] }>
+
+export async function GET(req: NextRequest, { params }: { params:  tParams }) {
+    const { slug }: {slug: string[]} = await params
 
     if (slug.length === 0) {
         return NextResponse.redirect(req.nextUrl.origin)
